@@ -11,19 +11,14 @@ namespace ContainerVervoer
         {
             return (TotalStackWeight + container.Weight) <= 120000;
         }
-
-        // Bepaal of de stack vol is
         public bool IsFull
         {
             get
             {
-                // Je moet de logica voor het bepalen of de stack vol is hier implementeren
-                // Bijvoorbeeld, je zou kunnen controleren of het totale gewicht van de containers gelijk is aan de maximale capaciteit van de stack
                 return TotalStackWeight >= 120000;
             }
         }
 
-        // Probeer een container aan de stack toe te voegen
         public bool TryAddContainerToStack(Container container)
         {
             if (CanAddContainer(container))
