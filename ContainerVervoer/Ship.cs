@@ -17,16 +17,15 @@
                 Rows.Add(new Row(width));
             }
         }
-
         public bool TryAddContainerToSpecificRow(Container container, int rowIndex, bool markAsFull, bool leftSide)
         {
-            int middle = (Width + 1) / 2;
+            int middle = (Width + 1) / 2;  // Verdeling voor een oneven breedte
             int start = leftSide ? 0 : middle;
             int end = leftSide ? middle : Width;
 
             for (int i = start; i < end; i++)
             {
-                if (!Rows[rowIndex].Stacks[i].IsFull && Rows[rowIndex].Stacks[i].TryAddContainerToStack(container))
+                if (Rows[rowIndex].Stacks[i].TryAddContainerToStack(container))
                 {
                     if (markAsFull)
                     {
@@ -35,20 +34,43 @@
                     return true;
                 }
             }
+
+            // Als de containers niet kunnen worden toegevoegd aan de opgegeven rij, probeer een andere rij
             return false;
         }
 
-        public bool TryAddContainerToAnyRow(Container container, bool markAsFull, bool leftSide)
+
+
+        public int GetTotalWeightOfSide(bool leftSide)
         {
-            foreach (var row in Rows)
+            int totalWeight = 0;
+            int middle = (Width + 1) / 2;
+            int start = leftSide ? 0 : middle;
+            int end = leftSide ? middle : Width;
+
+            for (int i = 0; i < Length; i++)
             {
-                if (TryAddContainerToSpecificRow(container, Rows.IndexOf(row), markAsFull, leftSide))
+                for (int j = start; j < end; j++)
+                {
+                    totalWeight += Rows[i].Stacks[j].TotalStackWeight;
+                }
+            }
+
+            return totalWeight;
+        }
+
+        public bool TryAddContainerToAnyPosition(Container container, bool markAsFull, bool leftSide)
+        {
+            for (int rowIndex = 0; rowIndex < Length; rowIndex++)
+            {
+                if (TryAddContainerToSpecificRow(container, rowIndex, markAsFull, leftSide))
                 {
                     return true;
                 }
             }
             return false;
         }
+
 
         public bool TryAddContainerToTop(Container container, int rowIndex, bool markAsFull, bool leftSide)
         {

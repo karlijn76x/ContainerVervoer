@@ -7,17 +7,16 @@
 
         public Row(int width)
         {
-            Stacks = new List<Stack>(width); // Initialise stack list with initial "width" 
+            Stacks = new List<Stack>();
             for (int i = 0; i < width; i++)
             {
                 Stacks.Add(new Stack());
             }
         }
+
         public void MarkAsFull()
         {
-
-           IsFull = true;
+            IsFull = true;
         }
-        
     }
 }

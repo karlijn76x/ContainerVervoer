@@ -77,8 +77,8 @@
                 else
                 {
                     placed = placeOnLeftSide
-                        ? Ship.TryAddContainerToAnyRow(container, markAsFull, leftSide: true)
-                        : Ship.TryAddContainerToAnyRow(container, markAsFull, leftSide: false);
+                        ? Ship.TryAddContainerToAnyPosition(container, markAsFull, leftSide: true)
+                        : Ship.TryAddContainerToAnyPosition(container, markAsFull, leftSide: false);
                 }
 
                 if (!placed)
@@ -108,6 +108,12 @@
                             : Ship.TryAddContainerToTop(container, i, markAsFull, leftSide: false);
                         if (placed) break;
                     }
+                }
+                else
+                {
+                    placed = placeOnLeftSide
+                        ? Ship.TryAddContainerToAnyPosition(container, markAsFull, leftSide: true)
+                        : Ship.TryAddContainerToAnyPosition(container, markAsFull, leftSide: false);
                 }
 
                 if (!placed)
