@@ -20,7 +20,7 @@
 
         public bool TryAddContainerToSpecificRow(Container container, int rowIndex, bool markAsFull, bool leftSide)
         {
-            int middle = (Width + 1) / 2;  // Verdeling voor een oneven breedte
+            int middle = (Width + 1) / 2;
             int start = leftSide ? 0 : middle;
             int end = leftSide ? middle : Width;
 
@@ -37,23 +37,6 @@
             }
             return false;
         }
-        public int GetTotalWeightOfSide(bool leftSide)
-        {
-            int totalWeight = 0;
-            int middle = (Width + 1) / 2;
-            int start = leftSide ? 0 : middle;
-            int end = leftSide ? middle : Width;
-
-            for (int i = 0; i < Length; i++)
-            {
-                for (int j = start; j < end; j++)
-                {
-                    totalWeight += Rows[i].Stacks[j].TotalStackWeight;
-                }
-            }
-
-            return totalWeight;
-        }
 
         public bool TryAddContainerToAnyRow(Container container, bool markAsFull, bool leftSide)
         {
@@ -61,6 +44,26 @@
             {
                 if (TryAddContainerToSpecificRow(container, Rows.IndexOf(row), markAsFull, leftSide))
                 {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool TryAddContainerToTop(Container container, int rowIndex, bool markAsFull, bool leftSide)
+        {
+            int middle = (Width + 1) / 2;
+            int start = leftSide ? 0 : middle;
+            int end = leftSide ? middle : Width;
+
+            for (int i = start; i < end; i++)
+            {
+                if (!Rows[rowIndex].Stacks[i].IsFull && Rows[rowIndex].Stacks[i].TryAddContainerToStack(container))
+                {
+                    if (markAsFull)
+                    {
+                        Rows[rowIndex].MarkAsFull();
+                    }
                     return true;
                 }
             }
